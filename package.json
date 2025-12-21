@@ -5,6 +5,9 @@
     "client",
     "server"
   ],
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "setup": "npm --prefix client install && npm --prefix server install",
     "dev": "concurrently -n client,server -c auto \"npm:dev:client\" \"npm:dev:server\"",
