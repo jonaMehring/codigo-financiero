@@ -1,0 +1,2 @@
+export const MP_CHECKOUT_URL = "https://www.mercadopago.com.ar/payment-link/v1/redirect?link-id=f489d99f-a093-4a73-879c-bcb5b7a4e269&source=link";
+export const EBOOK_URL = `${import.meta.env.BASE_URL}ebook/Codigo-Financiero.pdf`;
