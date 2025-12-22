@@ -3,7 +3,10 @@ import cors from "cors";
 
 const app = express();
 
-// CORS CONFIG
+// ✅ PORT para Koyeb (Koyeb setea process.env.PORT)
+const PORT = process.env.PORT || 3000;
+
+// ✅ CORS
 app.use(cors({
   origin: [
     "https://codigo-financiero.integraprograma.com",
@@ -14,7 +17,6 @@ app.use(cors({
 }));
 
 app.use(express.json());
-
 
 // ===== health =====
 app.get("/health", (req, res) => res.json({ ok: true }));
