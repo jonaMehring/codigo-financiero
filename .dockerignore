@@ -1,0 +1,25 @@
+# dependencias
+**/node_modules
+**/.npm
+**/.cache
+
+# builds
+**/dist
+**/build
+**/.vite
+
+# logs
+**/*.log
+
+# git / editor
+.git
+.vscode
+
+# env / secretos
+.env
+**/.env
+**/.env.*
+
+# sistema
+.DS_Store
+Thumbs.db
