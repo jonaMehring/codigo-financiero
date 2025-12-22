@@ -2,22 +2,19 @@ import express from "express";
 import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// ===== middlewares =====
+// CORS CONFIG
+app.use(cors({
+  origin: [
+    "https://codigo-financiero.integraprograma.com",
+    "https://www.codigo-financiero.integraprograma.com"
+  ],
+  methods: ["GET", "POST"],
+  credentials: true
+}));
+
 app.use(express.json());
 
-// CORS: permitir solo tu dominio de Hostinger
-app.use(
-  cors({
-    origin: [
-      "https://codigo-financiero.integraprograma.com",
-      "https://www.codigo-financiero.integraprograma.com",
-    ],
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
 
 // ===== health =====
 app.get("/health", (req, res) => res.json({ ok: true }));
