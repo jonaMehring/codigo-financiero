@@ -4,24 +4,45 @@ import React, { useEffect, useState } from "react";
 const CTAButton = ({ children, className = "" }) => {
   const buy = async () => {
     try {
-      const r = await fetch(`${import.meta.env.VITE_API_URL}/api/mp/create-preference`, {
+      const API = import.meta.env.VITE_API_URL;
+
+      if (!API) {
+        throw new Error("Falta configurar VITE_API_URL en el frontend");
+      }
+
+      const r = await fetch(`${API}/api/mp/create-preference`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
+
+      // si no es 2xx, mostrar el texto crudo (muchas veces es HTML del proxy)
+      if (!r.ok) {
+        const text = await r.text();
+        console.error("create-preference failed:", r.status, text);
+        throw new Error(`Error iniciando pago (HTTP ${r.status}). Revisá consola.`);
+      }
+
       const data = await r.json();
-      if (!data?.init_point) throw new Error("No se pudo iniciar el pago");
+
+      if (!data?.init_point) {
+        console.error("Respuesta sin init_point:", data);
+        throw new Error("No se pudo iniciar el pago (sin init_point).");
+      }
+
       window.location.href = data.init_point;
     } catch (e) {
-      alert(e.message || "Error iniciando pago");
+      console.error(e);
+      alert(e?.message || "Error iniciando pago");
     }
   };
 
   return (
-    <button onClick={buy} className={`btn btn--primary btn--block ${className}`}>
+    <button type="button" onClick={buy} className={`btn btn--primary btn--block ${className}`}>
       {children}
     </button>
   );
 };
+
 
 
 

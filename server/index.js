@@ -1,22 +1,40 @@
 import express from "express";
 import cors from "cors";
+import mpRoutes from "./routes/mp.js";
 
 const app = express();
 
 // ✅ PORT para Koyeb (Koyeb setea process.env.PORT)
 const PORT = process.env.PORT || 3000;
 
-// ✅ CORS
-app.use(cors({
-  origin: [
-    "https://codigo-financiero.integraprograma.com",
-    "https://www.codigo-financiero.integraprograma.com"
-  ],
-  methods: ["GET", "POST"],
-  credentials: true
-}));
+// ✅ CORS (IMPORTANTE: antes de rutas)
+const ALLOWED_ORIGINS = new Set([
+  "https://codigo-financiero.integraprograma.com",
+  "https://www.codigo-financiero.integraprograma.com",
+]);
+
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      // Permite llamadas sin Origin (server-to-server, health checks, etc.)
+      if (!origin) return cb(null, true);
+
+      if (ALLOWED_ORIGINS.has(origin)) return cb(null, true);
+
+      return cb(new Error(`Not allowed by CORS: ${origin}`));
+    },
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: false,
+  })
+);
+
+// ✅ Responder preflight para TODO
+app.options("*", cors());
 
 app.use(express.json());
+
+app.use("/api/mp", mpRoutes);
 
 // ===== health =====
 app.get("/health", (req, res) => res.json({ ok: true }));
@@ -32,6 +50,11 @@ app.post("/api/mp/create-preference", async (req, res) => {
       return res.status(500).json({
         error: "Faltan variables de entorno",
         required: ["FRONT_URL", "API_URL", "MP_ACCESS_TOKEN"],
+        current: {
+          FRONT_URL: !!FRONT_URL,
+          API_URL: !!API_URL,
+          MP_ACCESS_TOKEN: !!ACCESS_TOKEN,
+        },
       });
     }
 
@@ -50,7 +73,6 @@ app.post("/api/mp/create-preference", async (req, res) => {
         failure: `${FRONT_URL}/gracias`,
       },
       auto_return: "approved",
-      // webhook a Koyeb
       notification_url: `${API_URL}/api/mp/webhook`,
     };
 
@@ -64,6 +86,10 @@ app.post("/api/mp/create-preference", async (req, res) => {
     });
 
     const pref = await r.json();
+
+    if (!r.ok) {
+      return res.status(400).json({ error: "MP error", mp: pref });
+    }
 
     if (!pref?.init_point) {
       return res.status(400).json({ error: "No init_point", pref });
@@ -99,7 +125,6 @@ app.post("/api/mp/webhook", async (req, res) => {
       transaction_amount: payment?.transaction_amount,
     });
 
-    // ✅ luego: guardar en DB / enviar email / generar link tokenizado
     return res.sendStatus(200);
   } catch (e) {
     console.error("webhook error:", e);
