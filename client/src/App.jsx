@@ -10,7 +10,7 @@ const CTAButton = ({ children, className = "" }) => {
         throw new Error("Falta configurar VITE_API_URL en el frontend");
       }
 
-      const r = await fetch(`${API}/api/mp/create-preference`, {
+      const r = await fetch(`${import.meta.env.VITE_API_URL}/api/mp/create-preference`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
