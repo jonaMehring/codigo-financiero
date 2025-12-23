@@ -9,8 +9,8 @@ const requiredEnv = (name) => {
 
 router.post("/create-preference", async (req, res) => {
   try {
-    const FRONT_URL = requiredEnv("FRONT_URL");      // https://codigo-financiero.integraprograma.com
-    const API_URL = requiredEnv("API_URL");          // https://xxxxx.koyeb.app
+    const FRONT_URL = requiredEnv("FRONT_URL");
+    const API_URL = requiredEnv("API_URL");
     const ACCESS_TOKEN = requiredEnv("MP_ACCESS_TOKEN");
 
     if (!FRONT_URL || !API_URL || !ACCESS_TOKEN) {
@@ -27,12 +27,7 @@ router.post("/create-preference", async (req, res) => {
 
     const body = {
       items: [
-        {
-          title: "Código Financiero - Ebook",
-          quantity: 1,
-          currency_id: "USD",
-          unit_price: 10,
-        },
+        { title: "Código Financiero - Ebook", quantity: 1, currency_id: "USD", unit_price: 10 },
       ],
       back_urls: {
         success: `${FRONT_URL}/gracias`,
@@ -54,9 +49,8 @@ router.post("/create-preference", async (req, res) => {
 
     const pref = await r.json();
 
-    if (!pref?.init_point) {
-      return res.status(400).json({ error: "No init_point", pref });
-    }
+    if (!r.ok) return res.status(400).json({ error: "MP error", mp: pref });
+    if (!pref?.init_point) return res.status(400).json({ error: "No init_point", pref });
 
     return res.json({ init_point: pref.init_point, preference_id: pref.id });
   } catch (e) {
@@ -83,8 +77,6 @@ router.post("/webhook", async (req, res) => {
       status: payment?.status,
       status_detail: payment?.status_detail,
       payer_email: payment?.payer?.email,
-      date_approved: payment?.date_approved,
-      transaction_amount: payment?.transaction_amount,
     });
 
     return res.sendStatus(200);
