@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 
 
+
 const CTAButton = ({ children, className = "" }) => {
   const buy = async () => {
     try {
-      const API = import.meta.env.VITE_API_URL;
+      // ✅ Tomar la URL real del .env (Vite)
+      let API_URL = import.meta.env.VITE_API_URL;
 
-      if (!API) {
+      if (!API_URL) {
         throw new Error("Falta configurar VITE_API_URL en el frontend");
       }
 
-      const r = await fetch(`${import.meta.env.VITE_API_URL}/api/mp/create-preference`, {
+      // ✅ Evitar doble // si viene con / al final
+      API_URL = API_URL.replace(/\/+$/, "");
+
+      // ✅ Llamada correcta al backend
+      const r = await fetch(`${API_URL}/api/mp/create-preference`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
@@ -42,12 +48,8 @@ const CTAButton = ({ children, className = "" }) => {
     </button>
   );
 };
-
-
-
-
-
-
+   
+ 
 // ====== COUNTDOWN GLOBAL 24 HS ======
 function useGlobalCountdown(hours = 24) {
   const STORAGE_KEY = "cf_deadline";
