@@ -1,29 +1,23 @@
 // src/Gracias.jsx
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 // ✅ ruta al PDF dentro de /public/ebook
 const EBOOK_URL = "/ebook/Codigo-Financiero.pdf";
 
 export default function Gracias() {
-useEffect(() => {
+  useEffect(() => {
     // ✅ Descarga automática al entrar a la página
     const link = document.createElement("a");
     link.href = EBOOK_URL;
     link.download = "Codigo-Financiero.pdf";
-    link.rel = "noopener"; // seguridad
+    link.rel = "noopener";
     link.style.display = "none";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-// ✅ Fallback: si el navegador bloquea la descarga automática
-setTimeout(() => {
-  window.open(EBOOK_URL, "_blank", "noopener,noreferrer");
-}, 1200);
-
-
-    // fallback: si el navegador bloquea la descarga, abre el PDF
-    setTimeout(() => {
+    // ✅ Fallback: si el navegador bloquea la descarga, abre el PDF
+    const t = setTimeout(() => {
       window.open(EBOOK_URL, "_blank", "noopener,noreferrer");
     }, 1200);
 
@@ -37,6 +31,8 @@ setTimeout(() => {
         page_location: window.location.href,
       });
     }
+
+    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -54,7 +50,7 @@ setTimeout(() => {
           <p className="section__note section__note--light">
             Si la descarga no comienza en unos segundos o tu navegador la bloquea, podés usar el siguiente botón:
           </p>
-  
+
           <div style={{ marginTop: "24px", marginBottom: "24px" }}>
             <a
               href={EBOOK_URL}
@@ -70,10 +66,10 @@ setTimeout(() => {
           </p>
         </div>
       </main>
- 
+
       <footer className="footer">
         <div className="container footer__inner">
-          <div className="footer__grid"> 
+          <div className="footer__grid">
             <div>
               <h4 className="footer__title">Código Financiero</h4>
               <p className="footer__text">
@@ -97,7 +93,7 @@ setTimeout(() => {
             </div>
           </div>
 
-          <div className="footer__bottom"> 
+          <div className="footer__bottom">
             <p>© 2025 Lucas Ferrer – Código Financiero · Todos los derechos reservados</p>
 
             <p className="footer__by">
