@@ -5,16 +5,16 @@ import { useEffect } from "react";
 const EBOOK_URL = "/ebook/Codigo-Financiero.pdf";
 
 export default function Gracias() {
-  useEffect(() => {
-  // ✅ Descarga automática al entrar a la página
-const link = document.createElement("a");
-link.href = EBOOK_URL;
-link.download = "Codigo-Financiero.pdf";
-link.rel = "noopener"; // seguridad
-link.style.display = "none";
-document.body.appendChild(link);
-link.click();
-document.body.removeChild(link);
+useEffect(() => {
+    // ✅ Descarga automática al entrar a la página
+    const link = document.createElement("a");
+    link.href = EBOOK_URL;
+    link.download = "Codigo-Financiero.pdf";
+    link.rel = "noopener"; // seguridad
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
 // ✅ Fallback: si el navegador bloquea la descarga automática
 setTimeout(() => {
