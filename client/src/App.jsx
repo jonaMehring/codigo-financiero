@@ -164,7 +164,7 @@ export default function App() {
             </h1>
 
             <p className="hero__subtitle">
-              Ebook de 120 páginas con el sistema completo paso a paso para
+              Ebook de 79 páginas con el sistema completo paso a paso para
               identificar qué está frenando tu flujo de dinero y transformarlo
               en menos de 30 días.
             </p>
@@ -583,7 +583,7 @@ export default function App() {
             </div>
 
             <ul className="list list--light">
-              <li>Ebook digital completo de 120 páginas.</li>
+              <li>Ebook digital completo de 79 páginas.</li>
               <li>Las 3 partes incluidas.</li>
               <li>Descarga inmediata.</li>
               <li>Protocolo de 30 días completo.</li>
@@ -599,7 +599,7 @@ export default function App() {
                 <p className="pricing__price">
                   <strong className="precio">
                     PRECIO DE LANZAMIENTO:
-                    <span className="precio-destacado"> $10 USD</span>
+                    <span className="precio-destacado"> $29 USD</span>
                   </strong>
                 </p>
                 <p className="pricing__mini">
@@ -735,7 +735,7 @@ export default function App() {
     <p className="section__note section__note--light">
       Mi filosofía es simple: el problema con el dinero no es externo, es
       interno. Cuando desbloqueás tu código, los resultados empiezan a
-      aparecer de forma natural, sin forzar. Los <strong>$10 USD</strong> que
+      aparecer de forma natural, sin forzar. Los <strong>$29 USD</strong> que
       vale este ebook no representan su valor real; son la inversión mínima
       para demostrarte que estás comprometido con tu transformación.
     </p>
