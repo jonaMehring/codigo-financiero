@@ -36,11 +36,22 @@ router.post("/create-preference", async (req, res) => {
         },
       });
     }
+    const PRICE = Number(requiredEnv("EBOOK_PRICE") || "10");
+
+    if (!Number.isFinite(PRICE) || PRICE <= 0) {
+      return res.status(500).json({ error: "EBOOK_PRICE inválido" });
+    }
 
     const body = {
       items: [
-        { title: "Código Financiero - Ebook", quantity: 1, currency_id: "USD", unit_price: 10 },
+        {
+          title: "Código Financiero - Ebook",
+          quantity: 1,
+          currency_id: "USD",
+          unit_price: PRICE,
+        },
       ],
+
       back_urls: {
         success: `${FRONT_URL}/gracias`,
         pending: `${FRONT_URL}/gracias`,
