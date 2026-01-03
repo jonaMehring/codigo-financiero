@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { API_URL } from "./config";
 
 // ✅ Ahora el ebook se descarga desde el BACKEND (archivo privado)
 const getEbookUrl = (paymentId) =>
-  `/api/mp/download-ebook?payment_id=${encodeURIComponent(paymentId)}`;
+  `${API_URL}/api/mp/download-ebook?payment_id=${encodeURIComponent(paymentId)}`;
 
 export default function Gracias() {
   const [loading, setLoading] = useState(true);
@@ -28,7 +29,9 @@ export default function Gracias() {
           return;
         }
 
-        const r = await fetch(`/api/mp/verify-payment?payment_id=${encodeURIComponent(paymentId)}`);
+        const r = await fetch(
+          `${API_URL}/api/mp/verify-payment?payment_id=${encodeURIComponent(paymentId)}`
+        );
         const data = await r.json();
 
         if (!alive) return;
@@ -41,7 +44,7 @@ export default function Gracias() {
         if (data.approved) {
           const ebookUrl = getEbookUrl(paymentId);
 
-          // descarga directa (mejor que crear <a> a un archivo público)
+          // descarga directa
           window.location.href = ebookUrl;
 
           // ✅ Evento GA4 SOLO si approved
