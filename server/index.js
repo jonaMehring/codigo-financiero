@@ -35,7 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 // ===== health =====
 app.get("/health", (req, res) => res.json({ ok: true }));
 
-// ✅ Rutas MercadoPago (SIN duplicar)
+// ✅ Rutas MercadoPago
 app.use("/api/mp", mpRoutes);
 
 app.listen(PORT, () => {
